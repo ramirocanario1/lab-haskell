@@ -1,5 +1,6 @@
 import Data.List
 import Data.Char
+-- import Data.Text
 
 -- RESOLUCION:
 
@@ -35,11 +36,7 @@ separar_palabras linea = unwords (map a_titulo (words linea))
 
 a_titulos archivo = map separar_palabras archivo
 
+-- limpiar: quitar los espacios al principio y al final de las líneas de un archivo.
+quitar_espacios linea = dropWhile isSpace (dropWhileEnd isSpace linea)
 
-
-myScore x
-   | x > 90 = "A"
-   | x > 80 = "B"
-   | x > 70 = "C"
-   | x > 60 = "D"
-   | otherwise = "F"
+limpiar archivo = map quitar_espacios archivo
