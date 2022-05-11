@@ -1,8 +1,7 @@
 import Data.List
 import Data.Char
--- import Data.Text
 
--- RESOLUCION:
+----------------------------------- FASE 1 -----------------------------------
 
 -- tac: revierte el orden de líneas de un archivo, es decir, devuelve el archivo en el orden inverso
 tac x = reverse x
@@ -40,3 +39,30 @@ a_titulos archivo = map separar_palabras archivo
 quitar_espacios linea = dropWhile isSpace (dropWhileEnd isSpace linea)
 
 limpiar archivo = map quitar_espacios archivo
+
+----------------------------------- FASE 2 -----------------------------------
+
+----------- CODIFICACIÓN -----------
+
+get_arreglo linea = map length (words linea) -- Arreglo del paso 2
+
+separar_cada n [] = [] -- Separacion del paso 4
+separar_cada n linea = take n linea : separar_cada n (drop n linea) 
+
+separar [] [] = [] -- Separacion a partir de arreglo (paso 7)
+separar linea (x:xs) = take x linea : separar (drop x linea) xs
+
+-- Función intermedia para mejor legibilidad
+procesar linea = concat (map reverse (separar_cada 4 (concat (words linea))))
+
+codificar linea = unwords (separar (procesar linea) (get_arreglo linea))
+
+----------- DECODIFICACIÓN -----------
+
+hallar_arreglo [] = [] 
+hallar_arreglo linea = length (head (words linea)) : hallar_arreglo (unwords (tail (words linea)))
+
+decodificar linea = unwords (separar (concat (map reverse (separar_cada 4 (concat (words (linea)))))) (hallar_arreglo linea))
+
+-- Funcion para probar la decodificación.
+probar linea = decodificar (codificar linea)
